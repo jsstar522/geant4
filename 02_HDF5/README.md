@@ -42,7 +42,7 @@ print (eplus_0)
 
 하나의 데이터는 객체로 구성되어 있고 layer1, layer2, layer3 3가지 종류로 나뉘어져 있습니다. 이는 ATLAS Calorimeter의 특성상 구역 3개를 layer로 나누어 놓은 것입니다.
 
-```json
+```
 {
     "layer_0": 
     [[[ 0.          0.          0.         ...,  0.          0.          0.088005  ]
