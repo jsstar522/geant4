@@ -29,10 +29,12 @@ import numpy as np
 d_gamma = h5py.File('data/gamma.hdf5', 'r')
 d_eplus = h5py.File('data/eplus.hdf5', 'r')
 
+gamma_energy = d_gamma['energy'][:]
 gamma_0 = d_gamma['layer_0'][:]
 gamma_1 = d_gamma['layer_1'][:]
 gamma_2 = d_gamma['layer_2'][:]
 
+eplus_energy = d_eplus['energy'][:]
 eplus_0 = d_eplus['layer_0'][:]
 eplus_1 = d_eplus['layer_1'][:]
 eplus_2 = d_eplus['layer_2'][:]
@@ -40,7 +42,7 @@ eplus_2 = d_eplus['layer_2'][:]
 print (eplus_0)
 ```
 
-하나의 데이터는 객체로 구성되어 있고 layer1, layer2, layer3 3가지 종류로 나뉘어져 있습니다. 이는 ATLAS Calorimeter의 특성상 구역 3개를 layer로 나누어 놓은 것입니다.
+하나의 데이터는 객체로 구성되어 있고 layer1, layer2, layer3 3가지 종류로 나뉘어져 있습니다. 이는 ATLAS Calorimeter의 특성상 구역 3개를 layer로 나누어 놓은 것입니다. energy는 초기입자의 에너지입니다.
 
 ```
 {
@@ -98,3 +100,20 @@ print (eplus_2.shape)
 ```
 
 `layer_2`는 12x6의 데이터가 추출됩니다. 
+
+
+
+## Sparsity
+
+9x9의 이미지가 있을 때, 신호가 들어온 곳만 모아서 전체 셀 81개로 나누어 `sparsity`를 구합니다. 예를들어 2x2인 4개의 이미지 3개라고 가정했을 때 sparsity를 구해보면 다음과 같습니다.
+
+```python
+signal = np.array([[0,2,1,1], [2,0,1,0], [3,0,0,0]])
+## signal이 있는 것(x>0)만 모아서 평균을 냄
+sparsity = map(lambda x: (x>0).mean(), signal)
+
+## output: [0.75, 0.5, 0.25]
+```
+
+첫번째 이미지는 signal이 75%, 두번재 이미지는 50%, 세번째 이미지는 25%로 signal이 확인되므로 **particle shower가 얼마나 멀리 퍼져있는 것을 알 수 있습니다.**
+
